@@ -1,0 +1,52 @@
+---
+title:    "Wine Quality Prediction Model"
+subtitle: "Predict Wine Quality based on three predictors"
+author:   "Greig Robertson"
+date:     "12/04/2017"
+output:   ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Summary of Objective
+
+Wine quality data is available from https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009.  More details are available at UCI Machine Learning Repository - https://archive.ics.uci.edu/ml/datasets/wine+quality
+
+Citation from https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names
+
+  This dataset is public available for research. The details are described in [Cortez et al., 2009].
+  Please include this citation if you plan to use this database:
+
+  P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
+  Modeling wine preferences by data mining from physicochemical properties.
+  In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
+
+  Available at: [@Elsevier] http://dx.doi.org/10.1016/j.dss.2009.05.016
+                [Pre-press (pdf)] http://www3.dsi.uminho.pt/pcortez/winequality09.pdf
+                [bib] http://www3.dsi.uminho.pt/pcortez/dss09.bib
+
+
+
+## Data Processing
+
+```{r plotly, echo=FALSE, message=FALSE, warning=FALSE}
+```
+
+## Model
+
+```{r plotly, echo=FALSE, message=FALSE, warning=FALSE}
+```
+
+## Shiny Application Details
+
+There are three tabbed plots on the Shiny site showing.... A linear regression line is fitted through the markers for each predictor...
+
+You can:
+
+- Set the levels for alcohol, free sulfur dioxide and volatile acidity
+- Animate the alcohol level by pressing the play triangle
+
+## Future Development
+

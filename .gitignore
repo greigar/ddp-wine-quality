@@ -31,3 +31,9 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+
+# Data files and Shiny connection details
+app/rsconnect/
+app/winequality-red.csv
+app/winequality-white.csv
+
