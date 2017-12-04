@@ -12,21 +12,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Summary of Objective
 
-Wine quality data is available from https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009.  More details are available at UCI Machine Learning Repository - https://archive.ics.uci.edu/ml/datasets/wine+quality
+<font size="4">
 
-Citation from https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names
+</font>
 
-  This dataset is public available for research. The details are described in [Cortez et al., 2009].
-  Please include this citation if you plan to use this database:
-
-  P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
-  Modeling wine preferences by data mining from physicochemical properties.
-  In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
-
-  Available at: [@Elsevier] http://dx.doi.org/10.1016/j.dss.2009.05.016
-                [Pre-press (pdf)] http://www3.dsi.uminho.pt/pcortez/winequality09.pdf
-                [bib] http://www3.dsi.uminho.pt/pcortez/dss09.bib
-
+<font size="3">
+- Wine quality data is available from [Kaggle](https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009)
+- More details are available at [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/wine+quality)
+- Citation is available [here](https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names)
+</font>
 
 
 ## Data Processing
