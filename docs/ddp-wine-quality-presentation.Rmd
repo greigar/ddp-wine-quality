@@ -1,36 +1,156 @@
 ---
 title:    "Wine Quality Prediction Model"
-subtitle: "Predict Wine Quality based on three predictors"
+subtitle: "Exploritory Analysis and Prediction of Wine Quality <br />based on three predictors"
 author:   "Greig Robertson"
 date:     "12/04/2017"
-output:   ioslides_presentation
+output:  ioslides_presentation
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+#output:
+#  ioslides_presentation:
+#    widescreen: yes
+# Common libraries and variables
+
+library(tidyverse)
+library(caret)
+library(randomForest)
+library(knitr)
+library(kableExtra)
+
+data_dir <- "../data/"
 ```
 
-## Summary of Objective
+<style>
+body {
+    background-color: #6d9eed;
+}
+.textmed {
+  font-size: 14pt;
+}
+.textsmall {
+  font-size: 12pt;
+}
+.table td {
+  font-size: 10pt;
+}
+</style>
 
-<font size="4">
+## Summary
 
-</font>
 
-<font size="3">
+<div class="textmed">
+
+This data product uses available data sets for red and white Portuguese wine.  The data was analysed and a model (random forest) was created to predict the quality of wine based on the results of physicochemical tests.
+
+A Shiny application was developed based on these results using a simpler (faster) linear regression model.
+
+</div>
+
+<div class="textsmall">
+
 - Wine quality data is available from [Kaggle](https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009)
 - More details are available at [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/wine+quality)
 - Citation is available [here](https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names)
-</font>
+
+</div>
 
 
 ## Data Processing
 
-```{r plotly, echo=FALSE, message=FALSE, warning=FALSE}
+```{r data_process, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+col_spec <- cols(
+  `fixed acidity`        = col_double(),
+  `volatile acidity`     = col_double(),
+  `citric acid`          = col_double(),
+  `residual sugar`       = col_number(),
+  chlorides              = col_double(),
+  `free sulfur dioxide`  = col_number(),
+  `total sulfur dioxide` = col_double(),
+  density                = col_double(),
+  pH                     = col_number(),
+  sulphates              = col_double(),
+  alcohol                = col_number(),
+  quality                = col_integer()
+)
+
+read_wq_csv <- function(wine_colour) {
+  filename      <- paste0(data_dir, "winequality-", wine_colour, ".csv")
+  w_data        <- read_delim(filename, col_types=col_spec, delim=';')
+  w_data$colour <- wine_colour
+  w_data
+}
+
+white_wine_data  <- read_wq_csv("white")
+red_wine_data    <- read_wq_csv("red")
+
+wine_data        <- rbind(red_wine_data, white_wine_data)
+names(wine_data) <- make.names(names(wine_data))
+wine_data$colour <- as.integer(wine_data$colour == "red")
+
+
 ```
 
-## Model
+<div class="textmed">
 
-```{r plotly, echo=FALSE, message=FALSE, warning=FALSE}
+- The data were loaded from two semi-colon delimited files (one file for red, one for white)
+- The data sets were combined `rbind()` and an extra column indicating color was added
+
+
+The available columns are:
+</div>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+names(wine_data) %>%
+  kable("html", col.names = c("Name")) %>%
+    kable_styling()
+```
+
+<div class="textsmall">
+
+Where quality is on a scale of 0 (bad) to 10 (very good).
+
+</div>
+
+## Model - random forest
+
+A random forest model was trained and tested against a partitioned data set.
+
+<pre class="textsmall">
+
+```{r model, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+
+varimp_results <- function(model) {
+  varimp_temp <- varImp(tab_model_rf)
+  tibble(name = rownames(varimp_temp), value = varimp_temp$Overall ) %>% arrange(desc(value))
+}
+
+inTrain      <- createDataPartition(y = wine_data$quality, p = 0.75, list = FALSE)
+tab_training <- wine_data[inTrain,]
+tab_testing  <- wine_data[-inTrain,]
+
+tab_model_rf <- randomForest(quality ~ ., data = as.data.frame(tab_training), importance = TRUE) # 0.664
+tab_predict  <- predict(tab_model_rf, newdata = tab_testing[,-12])
+cfm          <- confusionMatrix(round(tab_predict), tab_testing$quality)
+cfm$overall %>% kable
+```
+</pre>
+
+
+## Model - linear regression
+
+This model was created to:
+
+- Create a model to predict quality of wine based on the other variables
+- Determine the main predictors of quality for use in a smaller model
+
+A smaller model using linear regression was used since this was much faster than the random forest model.
+For a user interactive data product, model accuracy was traded off against performance.
+
+```{r model_results, echo=FALSE, message=FALSE, warning=FALSE}
+varimp_results(tab_model_rf) %>% kable
 ```
 
 ## Shiny Application Details

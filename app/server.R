@@ -1,24 +1,24 @@
 # Wine Quality Shiny Application
 # This is the server logic of a Shiny web application.
 #
-# Data provided by 
-# https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009.  
-# More details are available at UCI Machine Learning Repository 
+# Data provided by
+# https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009.
+# More details are available at UCI Machine Learning Repository
 # https://archive.ics.uci.edu/ml/datasets/wine+quality
 #
 # Citation : https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names
 #
 # This dataset is public available for research. The details are described in [Cortez et al., 2009].
 # Please include this citation if you plan to use this database:
-#   
+#
 #   P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
 # Modeling wine preferences by data mining from physicochemical properties.
 # In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
-# 
+#
 # Available at: [@Elsevier] http://dx.doi.org/10.1016/j.dss.2009.05.016
 # [Pre-press (pdf)] http://www3.dsi.uminho.pt/pcortez/winequality09.pdf
 # [bib] http://www3.dsi.uminho.pt/pcortez/dss09.bib
-# 
+#
 
 
 library(shiny)      # For Shiny functions
@@ -47,7 +47,7 @@ col_spec <- cols(
 # note fields are delimited with a ';'
 #
 read_wq_csv <- function(wine_colour) {
-  filename      <- paste0("winequality-", wine_colour, ".csv")
+  filename      <- paste0("../data/winequality-", wine_colour, ".csv")
   w_data        <- read_delim(filename, col_types=col_spec, delim=';')
   w_data
 }
@@ -77,11 +77,11 @@ create_plot <- function(v1, v2, v3, predicted_wine) {
 
   g <- g + geom_smooth(method = lm, formula = y ~ splines::ns(x, 5) )
 
-  g <- g + geom_point(aes_string(x = v1, y = "quality", colour = v2, fill = v3), 
+  g <- g + geom_point(aes_string(x = v1, y = "quality", colour = v2, fill = v3),
                       stroke = 1, shape = 22, size = 1)
 
-  g <- g + geom_point(data= predicted_wine, 
-                      aes_string(x = v1, y = "quality", colour = v2, fill = v3), 
+  g <- g + geom_point(data= predicted_wine,
+                      aes_string(x = v1, y = "quality", colour = v2, fill = v3),
                       stroke = 3, shape = 21, size = 3, show.legend = FALSE)
 
   g <- g + scale_colour_gradientn(name = paste("Color:", v2), colours = terrain.colors(10)) +
@@ -106,6 +106,8 @@ shinyServer(function(input, output) {
     predicted_wine$quality <- round(predict(lm_model_3, newdata <- predicted_wine))
     predicted_wine
   })
+
+  output$help               <- renderText({ "this is text" })
 
   output$alcohol            <- renderPlot({ create_plot("alcohol",             "volatile.acidity",    "free.sulfur.dioxide", predict_result()) })
   output$volatile.acidity   <- renderPlot({ create_plot("volatile.acidity",    "free.sulfur.dioxide", "alcohol",             predict_result()) })

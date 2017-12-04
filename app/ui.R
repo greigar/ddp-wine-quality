@@ -26,6 +26,7 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       tabsetPanel(
+        tabPanel("Help",                textOutput("help")),
         tabPanel("Alcohol",             plotOutput("alcohol")),
         tabPanel("Volatile Acidity",    plotOutput("volatile.acidity")),
         tabPanel("Free Sulfur Dioxide", plotOutput("free.sulfur.dioxide"))
