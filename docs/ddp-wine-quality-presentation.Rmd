@@ -54,6 +54,32 @@ A Shiny application was developed based on these results using a simpler (faster
 - More details are available at [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/wine+quality)
 - Citation is available [here](https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names)
 
+
+<div class="textmed">
+
+Ideas for extending this data product are:
+
+</div>
+
+<div class="textsmall">
+
+- Include data from other wine reviews to improve the accuracy
+- Improve the model (perhaps only use random forest)
+
+</div>
+
+
+<div class="textmed">
+
+Application details:
+
+</div>
+
+<div class="textsmall">
+
+- The application is available [here](https://greigar.shinyapps.io/ddp-wine-quality/).
+- Git repo: https://github.com/greigar/ddp-wine-quality
+
 </div>
 
 
@@ -167,32 +193,4 @@ tibble(name = rownames(varimp_temp), value = varimp_temp$Overall ) %>%
   arrange(desc(value)) %>%
   kable("html", col.names = c("Name", "Value")) %>% kable_styling()
 ```
-
-## Shiny Application Details
-
-The application is available [here](https://greigar.shinyapps.io/ddp-wine-quality/). There are three tabbed plots on the Shiny site showing
-
-- Square points for each observation
-- A linear regression line through the markers for each predictor
-- A circular point showing the predicted quality
-
-You can:
-
-- Set the levels for alcohol, free sulfur dioxide and volatile acidity
-- Animate the alcohol level by pressing the play triangle
-
-<div class="textsmall">
-
-Git repo: https://github.com/greigar/ddp-wine-quality
-
-</div>
-
-
-## Future Development
-
-Ideas for extending this data product are:
-
-- Include data from other wine reviews to improve the accuracy
-- Improve the model (perhaps only use random forest)
-
 
