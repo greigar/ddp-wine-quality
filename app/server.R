@@ -47,7 +47,7 @@ col_spec <- cols(
 # note fields are delimited with a ';'
 #
 read_wq_csv <- function(wine_colour) {
-  filename      <- paste0("../data/winequality-", wine_colour, ".csv")
+  filename      <- paste0("data/winequality-", wine_colour, ".csv")
   w_data        <- read_delim(filename, col_types=col_spec, delim=';')
   w_data
 }
@@ -96,6 +96,12 @@ create_plot <- function(v1, v2, v3, predicted_wine) {
 }
 
 
+help_text <- HTML("With this application you can explore the effect of three measured chemicals on the predicted quality of wine.
+                  Adjust the sliders on the left hand side to explore their effect - you can also press the play button under the alcohol slider.
+                  <br />
+                  <br />
+                  Click on the tabs to explore three plots showing a linear regression line for each chemical.")
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   predict_result <- reactive({
@@ -107,8 +113,7 @@ shinyServer(function(input, output) {
     predicted_wine
   })
 
-  output$help               <- renderText({ "this is text" })
-
+  output$help               <- renderUI({ help_text })
   output$alcohol            <- renderPlot({ create_plot("alcohol",             "volatile.acidity",    "free.sulfur.dioxide", predict_result()) })
   output$volatile.acidity   <- renderPlot({ create_plot("volatile.acidity",    "free.sulfur.dioxide", "alcohol",             predict_result()) })
   output$free.sulfur.dioxide<- renderPlot({ create_plot("free.sulfur.dioxide", "alcohol",             "volatile.acidity",    predict_result()) })

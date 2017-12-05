@@ -1,10 +1,8 @@
 #
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
+# Wine Quality Shiny Application
 #
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
+# This is the user-interface definition of a Shiny web application.
+# http://shiny.rstudio.com/
 #
 
 library(shiny)
@@ -26,7 +24,7 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       tabsetPanel(
-        tabPanel("Help",                textOutput("help")),
+        tabPanel("Help",                htmlOutput("help")),
         tabPanel("Alcohol",             plotOutput("alcohol")),
         tabPanel("Volatile Acidity",    plotOutput("volatile.acidity")),
         tabPanel("Free Sulfur Dioxide", plotOutput("free.sulfur.dioxide"))

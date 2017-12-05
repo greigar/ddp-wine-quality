@@ -3,15 +3,14 @@ title:    "Wine Quality Prediction Model"
 subtitle: "Exploritory Analysis and Prediction of Wine Quality <br />based on three predictors"
 author:   "Greig Robertson"
 date:     "12/04/2017"
-output:  ioslides_presentation
+output:
+  ioslides_presentation:
+    widescreen: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-#output:
-#  ioslides_presentation:
-#    widescreen: yes
 # Common libraries and variables
 
 library(tidyverse)
@@ -20,7 +19,7 @@ library(randomForest)
 library(knitr)
 library(kableExtra)
 
-data_dir <- "../data/"
+data_dir <- "../app/data/"
 ```
 
 <style>
@@ -93,20 +92,20 @@ wine_data$colour <- as.integer(wine_data$colour == "red")
 
 ```
 
-<div class="textmed">
+<div class="textsmall">
 
 - The data were loaded from two semi-colon delimited files (one file for red, one for white)
 - The data sets were combined `rbind()` and an extra column indicating color was added
 
-
 The available columns are:
+
 </div>
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-names(wine_data) %>%
-  kable("html", col.names = c("Name")) %>%
-    kable_styling()
+names(wine_data) %>% kable("html") %>% kable_styling()
 ```
+
+<br />
 
 <div class="textsmall">
 
@@ -114,19 +113,19 @@ Where quality is on a scale of 0 (bad) to 10 (very good).
 
 </div>
 
+
 ## Model - random forest
 
-A random forest model was trained and tested against a partitioned data set.
+<div class="textsmall">
+
+A random forest model was trained and tested against a data set, further partitioned into training and testing data sets.  The overall results from the confusion matrix are:
+
+</div>
+
 
 <pre class="textsmall">
 
 ```{r model, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-
-varimp_results <- function(model) {
-  varimp_temp <- varImp(tab_model_rf)
-  tibble(name = rownames(varimp_temp), value = varimp_temp$Overall ) %>% arrange(desc(value))
-}
-
 inTrain      <- createDataPartition(y = wine_data$quality, p = 0.75, list = FALSE)
 tab_training <- wine_data[inTrain,]
 tab_testing  <- wine_data[-inTrain,]
@@ -134,33 +133,66 @@ tab_testing  <- wine_data[-inTrain,]
 tab_model_rf <- randomForest(quality ~ ., data = as.data.frame(tab_training), importance = TRUE) # 0.664
 tab_predict  <- predict(tab_model_rf, newdata = tab_testing[,-12])
 cfm          <- confusionMatrix(round(tab_predict), tab_testing$quality)
-cfm$overall %>% kable
+
+cfm$overall %>% kable("html") %>% kable_styling()
 ```
 </pre>
 
 
+<div class="textsmall">
+
+The accuracy is quite low.
+
+</div>
+
+
 ## Model - linear regression
+
+<div class="textsmall">
 
 This model was created to:
 
 - Create a model to predict quality of wine based on the other variables
-- Determine the main predictors of quality for use in a smaller model
+- Determine the *three* main predictors of quality for use in a smaller model (using `varImp()`)
 
 A smaller model using linear regression was used since this was much faster than the random forest model.
 For a user interactive data product, model accuracy was traded off against performance.
 
+</div>
+
+
 ```{r model_results, echo=FALSE, message=FALSE, warning=FALSE}
-varimp_results(tab_model_rf) %>% kable
+varimp_temp <- varImp(tab_model_rf)
+tibble(name = rownames(varimp_temp), value = varimp_temp$Overall ) %>%
+  arrange(desc(value)) %>%
+  kable("html", col.names = c("Name", "Value")) %>% kable_styling()
 ```
 
 ## Shiny Application Details
 
-There are three tabbed plots on the Shiny site showing.... A linear regression line is fitted through the markers for each predictor...
+The application is available [here](https://greigar.shinyapps.io/ddp-wine-quality/). There are three tabbed plots on the Shiny site showing
+
+- Square points for each observation
+- A linear regression line through the markers for each predictor
+- A circular point showing the predicted quality
 
 You can:
 
 - Set the levels for alcohol, free sulfur dioxide and volatile acidity
 - Animate the alcohol level by pressing the play triangle
 
+<div class="textsmall">
+
+Git repo: https://github.com/greigar/ddp-wine-quality
+
+</div>
+
+
 ## Future Development
+
+Ideas for extending this data product are:
+
+- Include data from other wine reviews to improve the accuracy
+- Improve the model (perhaps only use random forest)
+
 

@@ -22,7 +22,7 @@
       // Slide settings
       settings: {
                 title: 'Wine Quality Prediction Model',
-                        subtitle: 'Predict Wine Quality based on three predictors',
+                        subtitle: 'Exploritory Analysis and Prediction of Wine Quality <br />based on three predictors',
                 useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -87,7 +87,7 @@
 
 <body style="opacity: 0">
 
-<slides>
+<slides class="layout-widescreen">
 
   <slide class="title-slide segue nobackground">
         <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
@@ -99,19 +99,471 @@
           </hgroup>
   </slide>
 
-<slide class=''><hgroup><h2>Summary of Objective</h2></hgroup><article  id="summary-of-objective">
+<style>
+body {
+    background-color: #6d9eed;
+}
+.textmed {
+  font-size: 14pt;
+}
+.textsmall {
+  font-size: 12pt;
+}
+.table td {
+  font-size: 10pt;
+}
+</style>
 
-<p><font size="2"> Wine quality data is available from <a href='https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009' title=''>https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009</a>. More details are available at UCI Machine Learning Repository - <a href='https://archive.ics.uci.edu/ml/datasets/wine+quality' title=''>https://archive.ics.uci.edu/ml/datasets/wine+quality</a> </font></p>
+<slide class=''><hgroup><h2>Summary</h2></hgroup><article  id="summary">
 
-<p><font size="4"> Citation available <a href='https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names' title=''>here</a> </font></p>
+<div class="textmed">
+<p>This data product uses available data sets for red and white Portuguese wine. The data was analysed and a model (random forest) was created to predict the quality of wine based on the results of physicochemical tests.</p>
+
+<p>A Shiny application was developed based on these results using a simpler (faster) linear regression model.</p></div>
+
+<div class="textsmall">
+<ul>
+<li>Wine quality data is available from <a href='https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009' title=''>Kaggle</a></li>
+<li>More details are available at <a href='https://archive.ics.uci.edu/ml/datasets/wine+quality' title=''>UCI Machine Learning Repository</a></li>
+<li>Citation is available <a href='https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality.names' title=''>here</a></li>
+</ul></div>
 
 </article></slide><slide class=''><hgroup><h2>Data Processing</h2></hgroup><article  id="data-processing">
 
-</article></slide><slide class=''><hgroup><h2>Model</h2></hgroup><article  id="model">
+<div class="textsmall">
+<ul>
+<li>The data were loaded from two semi-colon delimited files (one file for red, one for white)</li>
+<li>The data sets were combined <code>rbind()</code> and an extra column indicating color was added</li>
+</ul>
+
+<p>The available columns are:</p></div>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+fixed.acidity
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+volatile.acidity
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+citric.acid
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+residual.sugar
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+chlorides
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+free.sulfur.dioxide
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total.sulfur.dioxide
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+density
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pH
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+sulphates
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+alcohol
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+quality
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+colour
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p><br /></p>
+
+<div class="textsmall">
+<p>Where quality is on a scale of 0 (bad) to 10 (very good).</p></div>
+
+</article></slide><slide class=''><hgroup><h2>Model - random forest</h2></hgroup><article  id="model---random-forest">
+
+<div class="textsmall">
+<p>A random forest model was trained and tested against a data set, further partitioned into training and testing data sets. The overall results from the confusion matrix are:</p></div>
+
+<pre class="textsmall">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><tbody>
+<tr>
+<td style="text-align:left;"> Accuracy </td>
+   <td style="text-align:right;"> 0.6527094 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kappa </td>
+   <td style="text-align:right;"> 0.4575751 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> AccuracyLower </td>
+   <td style="text-align:right;"> 0.6289858 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> AccuracyUpper </td>
+   <td style="text-align:right;"> 0.6758796 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> AccuracyNull </td>
+   <td style="text-align:right;"> 0.4365764 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> AccuracyPValue </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> McnemarPValue </td>
+   <td style="text-align:right;"> NaN </td>
+  </tr>
+</tbody></table>
+</pre>
+
+<div class="textsmall">
+<p>The accuracy is quite low.</p></div>
+
+</article></slide><slide class=''><hgroup><h2>Model - linear regression</h2></hgroup><article  id="model---linear-regression">
+
+<div class="textsmall">
+<p>This model was created to:</p>
+
+<ul>
+<li>Create a model to predict quality of wine based on the other variables</li>
+<li>Determine the <em>three</em> main predictors of quality for use in a smaller model (using <code>varImp()</code>)</li>
+</ul>
+
+<p>A smaller model using linear regression was used since this was much faster than the random forest model. For a user interactive data product, model accuracy was traded off against performance.</p></div>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Name
+
+</th>
+
+<th style="text-align:right;">
+
+Value
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+alcohol
+
+</td>
+
+<td style="text-align:right;">
+
+87.95623
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+volatile.acidity
+
+</td>
+
+<td style="text-align:right;">
+
+82.55369
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+free.sulfur.dioxide
+
+</td>
+
+<td style="text-align:right;">
+
+72.11978
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+sulphates
+
+</td>
+
+<td style="text-align:right;">
+
+64.73579
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pH
+
+</td>
+
+<td style="text-align:right;">
+
+60.80405
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total.sulfur.dioxide
+
+</td>
+
+<td style="text-align:right;">
+
+53.44822
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+residual.sugar
+
+</td>
+
+<td style="text-align:right;">
+
+52.63394
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+citric.acid
+
+</td>
+
+<td style="text-align:right;">
+
+50.50613
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+fixed.acidity
+
+</td>
+
+<td style="text-align:right;">
+
+49.06257
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+chlorides
+
+</td>
+
+<td style="text-align:right;">
+
+48.69321
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+density
+
+</td>
+
+<td style="text-align:right;">
+
+41.07213
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+colour
+
+</td>
+
+<td style="text-align:right;">
+
+12.23574
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 </article></slide><slide class=''><hgroup><h2>Shiny Application Details</h2></hgroup><article  id="shiny-application-details">
 
-<p>There are three tabbed plots on the Shiny site showing&#8230;. A linear regression line is fitted through the markers for each predictor&#8230;</p>
+<p>The application is available <a href='https://greigar.shinyapps.io/ddp-wine-quality/' title=''>here</a>. There are three tabbed plots on the Shiny site showing</p>
+
+<ul>
+<li>Square points for each observation</li>
+<li>A linear regression line through the markers for each predictor</li>
+<li>A circular point showing the predicted quality</li>
+</ul>
 
 <p>You can:</p>
 
@@ -120,7 +572,17 @@
 <li>Animate the alcohol level by pressing the play triangle</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Future Development</h2></hgroup><article  id="future-development"></article></slide>
+<div class="textsmall">
+<p>Git repo: <a href='https://github.com/greigar/ddp-wine-quality' title=''>https://github.com/greigar/ddp-wine-quality</a></p></div>
+
+</article></slide><slide class=''><hgroup><h2>Future Development</h2></hgroup><article  id="future-development">
+
+<p>Ideas for extending this data product are:</p>
+
+<ul>
+<li>Include data from other wine reviews to improve the accuracy</li>
+<li>Improve the model (perhaps only use random forest)</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
